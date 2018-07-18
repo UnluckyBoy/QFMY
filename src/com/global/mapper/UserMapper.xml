@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--     
+    namespace：必须与对应的接口全类名一致  UserMapper.java  
+    id ：必须与对应接口的某个对应的方法名一致即必须要和UserMapper.java接口中的方法同名。  
+ -->
+<mapper namespace="com.global.mapper.UserMapper">
+    <select id="login" parameterType="java.util.HashMap" resultType="User">
+        select * from user where password=#{password} and username=#{username} or tel=#{username}
+    </select>
+    <select id="getUser" parameterType="java.util.HashMap" resultType="User">
+        select * from user where username=#{username}
+    </select>
+    <update id="updateUser" parameterType="com.global.pojo.User">
+	        update user set password = #{password},age = #{age},sex = #{sex} where username = #{username}
+	    </update>
+    <delete id="SystemDelet" parameterType="java.util.HashMap">
+        delete from user where username=#{username}
+    </delete>
+    
+    <insert id="addHouse" parameterType="com.global.pojo.House">
+	        insert into house (roomname,price,address,description,room_num,duration,room_type,status,
+	                           landlord,rent_num,room_image1,room_image2,room_image3,room_image4,city,rent_status) values 
+	                           (#{roomname},#{price},#{address},#{description},#{room_num},#{duration},
+	                           #{room_type},#{status},#{landlord},#{rent_num},#{room_image1},#{room_image2},
+	                           #{room_image3},#{room_image4},#{city},#{rent_status})
+</insert>
+<select id="queryHouseByRoomname" resultType="com.global.pojo.House" parameterType="java.lang.String">
+	        select
+	              roomname,
+	              price,
+	              address,
+	              description,
+	              room_num,
+	              duration,
+	              room_type,
+	              status,
+	              landlord,
+	              rent_num,
+	              room_image1,
+	              room_image2,
+	              room_image3,
+	              room_image4,
+	              city,
+	              rent_status
+	        from 
+	              house
+	        where
+	              roomname = #{roomname} 
+	    </select>
+<!-- 根据城市查看房屋 -->
+	    <select id="queryHouseByCity" resultType="com.global.pojo.House" parameterType="java.lang.String">
+	        select
+	              roomname,
+	              price,
+	              address,
+	              description,
+	              room_num,
+	              duration,
+	              room_type,
+	              status,
+	              landlord,
+	              rent_num,
+	              room_image1,
+	              room_image2,
+	              room_image3,
+	              room_image4,
+	              city,
+	              rent_status
+	        from 
+	              house
+	        where
+	              city = #{city} and status = 0
+	    </select>
+    
+    <!-- 查询订单表 用户名为Key-->
+    <select id="getOrder" parameterType="java.util.HashMap" resultType="Order">
+        select * from user_order where renter=#{renter}
+    </select>
+    <!-- 订单房子信息查询 、联立查表-->
+    <select id="getHouseByRenter" parameterType="java.util.HashMap" resultType="OrderHouse">
+        select house.room_image1,
+        house.roomname,house.room_type,
+        house.price,house.duration,
+        house.city,house.address,
+        user_order.renter,
+        user_order.`status` from house,user_order where house.roomname=user_order.roomname and user_order.renter=#{renter};
+    </select>
+    <select id="getHouseByLand" parameterType="java.util.HashMap" resultType="OrderHouse">
+        select house.room_image1,
+        house.roomname,house.room_type,
+        house.price,house.duration,
+        house.city,house.address,
+        user_order.renter,
+        user_order.`status` from house,user_order where house.roomname=user_order.roomname and user_order.landlord=#{username};
+    </select>
+    <select id="getHouse_Order" parameterType="java.util.HashMap" resultType="OrderHouse">
+        select house.room_image1,
+        house.roomname,house.room_type,
+        house.price,house.duration,
+        house.city,house.address,
+        user_order.renter,
+        user_order.`status` from house,
+        user_order where house.roomname=user_order.roomname and user_order.roomname=#{housename} and user_order.renter=#{renter};
+    </select>
+    
+     <!-- 添加订单 -->
+     <insert id="addOrder" parameterType="java.util.Map">
+	        insert into user_order (renter,landlord,roomname,starttime,status) values 
+	                           (#{username},#{landlord},#{roomname},#{starttime},'待受理')
+	</insert>
+	<select id="getAllHouse" resultType="House">
+	    select * from house where status = 0 and rent_status='已审核'
+	</select>
+	    
+    <!-- 房东查看客户订单 -->
+    <select id="getHouse_Land" parameterType="java.util.HashMap" resultType="OrderHouse">
+        select house.room_image1,
+        house.roomname,house.room_type,
+        house.price,house.duration,
+        house.city,house.address,
+        user_order.renter,
+        user_order.`status` from house,user_order where house.roomname=user_order.roomname and user_order.status='待受理'
+    </select>
+    <!-- 取消订单：Key=房屋名 -->
+    <delete id="cancel_Single" parameterType="java.util.HashMap">
+        delete from user_order where roomname=#{housename}
+    </delete>
+    <select id="getOrderByName" parameterType="java.util.HashMap" resultType="Order">
+        select * from user_order where renter=#{renter}
+    </select>
+    <!-- 查询房屋:房屋名为Key -->
+    <select id="getHouse" parameterType="java.util.HashMap" resultType="House">
+        select * from house where roomname=#{housename}
+    </select>
+    <insert id="RegisterUser" parameterType="java.util.HashMap" >
+         insert into user(username,password,tel,age,sex) values(#{username},#{password},#{tel},#{age},#{sex})
+    </insert>
+    <select id="getByTel" parameterType="java.util.HashMap" resultType="User">
+         select * from user where tel=#{tel}
+    </select>
+    <!-- 查询房屋：Key=landlord -->
+    <select id="getHoueByLandlord" parameterType="java.util.HashMap" resultType="House">
+         select * from house where landlord=#{landlord}
+    </select>
+    <!-- 用户反馈 -->
+    <insert id="userSuggestion" parameterType="java.util.HashMap">
+         insert into suggestion(username,tel,subject,sub_content) values(#{username},#{tel},#{subject},#{sub_content})
+    </insert>
+     <!-- 查看用户反馈 -->
+	    <select id="querySuggestion" resultType="com.global.pojo.Suggestion">
+	        select
+                  username,
+                  tel,
+                  subject,
+                  sub_content
+            from
+                  suggestion
+	    </select>
+    
+    <!-- 根据城市,房间类型,价格查询房屋 -->
+	    <select id="queryHouseByCityTypePrice" resultType="com.global.pojo.House" parameterType="java.util.HashMap">
+	        select 
+	              roomname,
+	              price,
+	              address,
+	              description,
+	              room_num,
+	              duration,
+	              room_type,
+	              status,
+	              landlord,
+	              rent_num,
+	              room_image1,
+	              room_image2,
+	              room_image3,
+	              room_image4,
+	              city,
+	              rent_status
+	        from 
+	              house
+	        where
+	              city = #{city} and room_type = #{room_type}
+	              and status = 0 and rent_status = '已审核' and price between #{downprice} and #{topprice}
+	    </select>
+	    
+	    <!-- 根据房子审核未审核查询 -->
+	    <select id="queryHouseByrent_status" resultType="com.global.pojo.House">
+	        select
+	              roomname,
+	              price,
+	              address,
+	              description,
+	              room_num,
+	              duration,
+	              room_type,
+	              status,
+	              landlord,
+	              rent_num,
+	              room_image1,
+	              room_image2,
+	              room_image3,
+	              room_image4,
+	              city,
+	              rent_status
+	        from 
+	              house
+	        where
+	              rent_status = '待审核' 
+	    </select>
+	    
+	    <!-- 管理员界面操作 -->
+	    <!-- 根据房子审核未审核查询 -->
+	    <select id="HouseByrent_status" resultType="com.global.pojo.House">
+	        select
+	              roomname,
+	              price,
+	              address,
+	              description,
+	              room_num,
+	              duration,
+	              room_type,
+	              status,
+	              landlord,
+	              rent_num,
+	              room_image1,
+	              room_image2,
+	              room_image3,
+	              room_image4,
+	              city,
+	              rent_status
+	        from 
+	              house
+	        where
+	              rent_status = '待审核' 
+	    </select>
+	    
+	    <!-- 修改房屋的审核状态 -->
+	    <update id="updateHouseRent_Status" parameterType="java.lang.String">
+	        update house set rent_status = '已审核' where roomname = #{roomname}
+	    </update>
+	    
+	    <!-- 修改房屋成可租状态 -->
+	    <update id="updateHouseCanRent" parameterType="java.lang.String">
+	        update house set status = 0 where roomname = #{roomname}
+	    </update>
+	    
+	    <!-- 修改房屋成不可租状态 -->
+	    <update id="updateHouseCanNotRent" parameterType="java.lang.String">
+	        update house set status = 1 where roomname = #{roomname}
+	    </update>
+	    
+	    <!-- 增加房屋的租房次数 -->
+	    <update id="updateHouseRent_Num" parameterType="java.lang.String">
+	        update house set rent_num = rent_num + 1 where roomname = #{roomname}
+	    </update>
+	    
+	    <!-- 查看排名前3的房屋 -->
+	    <select id="queryHouseFirstThree" resultType="com.global.pojo.House">
+	        select
+	              roomname,
+	              price,
+	              address,
+	              description,
+	              room_num,
+	              duration,
+	              room_type,
+	              status,
+	              landlord,
+	              rent_num,
+	              room_image1,
+	              room_image2,
+	              room_image3,
+	              room_image4,
+	              city,
+	              rent_status	              
+	        from 
+	              house
+	        order by 
+	              rent_num 
+	        DESC  limit 3
+	    </select>
+	    
+	    <!-- 修改订单状态 -->
+	    <update id="updateUser_OrderStatus" parameterType="java.util.Map">
+	        update user_order set status = '已受理' where renter = #{username} and roomname = #{roomname}
+	    </update>
+	    
+ </mapper> 
