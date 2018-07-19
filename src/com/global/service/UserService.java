@@ -48,4 +48,7 @@ public interface UserService {
 	public List<House> queryHouseFirstThree();
 	public int updateUser_OrderStatus(Map<String,String> map);
 	public List<House> getAllHouse();
+	public List<OrderHouse> getHouseBysubscribe(Map<String,String> map);
+	public int upHouse_OrderSubcribe(Map<String,String> map);
+	public int FinishupHouse_OrderSubcribe(Map<String,String> map);
 }

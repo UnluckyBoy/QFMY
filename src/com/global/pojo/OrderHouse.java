@@ -11,12 +11,13 @@ public class OrderHouse {
 	private String city;
 	private String address;//ÏêÏ¸µØÖ·
 	private String status;//ÊÜÀí×´Ì¬
+	private String unsubscribe;//ÍË¶©×´Ì¬
 	public OrderHouse() {
 		super();
 	}
 	public OrderHouse(String roomname, String renter, String room_image1,
 			String room_type, double price, String duration, String city,
-			String address, String status) {
+			String address, String status, String unsubscribe) {
 		super();
 		this.roomname = roomname;
 		this.renter = renter;
@@ -27,6 +28,7 @@ public class OrderHouse {
 		this.city = city;
 		this.address = address;
 		this.status = status;
+		this.unsubscribe = unsubscribe;
 	}
 	public String getRoomname() {
 		return roomname;
@@ -82,11 +84,18 @@ public class OrderHouse {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getUnsubscribe() {
+		return unsubscribe;
+	}
+	public void setUnsubscribe(String unsubscribe) {
+		this.unsubscribe = unsubscribe;
+	}
 	@Override
 	public String toString() {
 		return "OrderHouse [roomname=" + roomname + ", renter=" + renter
 				+ ", room_image1=" + room_image1 + ", room_type=" + room_type
 				+ ", price=" + price + ", duration=" + duration + ", city="
-				+ city + ", address=" + address + ", status=" + status + "]";
+				+ city + ", address=" + address + ", status=" + status
+				+ ", unsubscribe=" + unsubscribe + "]";
 	}
 }

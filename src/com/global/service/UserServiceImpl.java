@@ -202,4 +202,22 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return userMapper.querySuggestion();
 	}
+
+	@Override
+	public List<OrderHouse> getHouseBysubscribe(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return userMapper.getHouseBysubscribe(map);
+	}
+
+	@Override
+	public int upHouse_OrderSubcribe(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return userMapper.upHouse_OrderSubcribe(map);
+	}
+
+	@Override
+	public int FinishupHouse_OrderSubcribe(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return userMapper.FinishupHouse_OrderSubcribe(map);
+	}
 }

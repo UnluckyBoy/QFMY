@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head> 
-  <title>蛋壳网</title> 
+  <title>首页</title> 
   <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" /> 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
   <script src="js/jquery.min.js"></script> 
@@ -35,7 +35,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
    <div class="container"> 
     <!--logo--> 
     <div class="logo"> 
-     <h1>短租网</h1> 
+     <h1>蛋壳网</h1> 
      <p>——一个租房的快捷网站</p> 
     </div> 
     <!--//logo--> 

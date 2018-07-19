@@ -85,8 +85,19 @@
         house.roomname,house.room_type,
         house.price,house.duration,
         house.city,house.address,
+        user_order.unsubscribe,
         user_order.renter,
-        user_order.`status` from house,user_order where house.roomname=user_order.roomname and user_order.renter=#{renter};
+        user_order.`status` from house,user_order where user_order.unsubscribe='未退订' and house.roomname=user_order.roomname and user_order.renter=#{renter};
+    </select>
+    <select id="getHouseBysubscribe" parameterType="java.util.HashMap" resultType="OrderHouse">
+        select house.room_image1,
+        house.roomname,house.room_type,
+        house.price,house.duration,
+        house.city,house.address,
+        user_order.renter,
+        user_order.unsubscribe,
+        user_order.`status` from house,
+        user_order where house.roomname=user_order.roomname and user_order.unsubscribe='要退订' and user_order.landlord=#{landlord};
     </select>
     <select id="getHouseByLand" parameterType="java.util.HashMap" resultType="OrderHouse">
         select house.room_image1,
@@ -105,6 +116,12 @@
         user_order.`status` from house,
         user_order where house.roomname=user_order.roomname and user_order.roomname=#{housename} and user_order.renter=#{renter};
     </select>
+    <update id="upHouse_OrderSubcribe" parameterType="java.util.HashMap">
+        update user_order set unsubscribe = '要退订' where renter = #{renter} and roomname = #{housename}
+    </update>
+    <update id="FinishupHouse_OrderSubcribe" parameterType="java.util.HashMap">
+        update user_order set unsubscribe = '已退订' where renter = #{renter} and roomname = #{housename}
+    </update>
     
      <!-- 添加订单 -->
      <insert id="addOrder" parameterType="java.util.Map">

@@ -51,6 +51,7 @@ public class UserController {
 	private OrderHouse singleHouse;
 	private Suggestion suggestion;
 	
+	
 	/*
 	 * 跳转主页
 	 */
@@ -425,26 +426,45 @@ public class UserController {
 		List<OrderHouse> houseList=userService.getHouse_Land(getRoomMap);
 		
 		if(houseList.size()==0){
+			List<OrderHouse> acceptList=userService.getHouseBysubscribe(getRoomMap);
 			try {
 				response.setContentType("text/html;charset=utf-8");
 				PrintWriter out =response.getWriter();
 				out.print("<script type='text/javascript'> alert('系统提示：您目前尚未出租过任何房屋!');"
-						+"document.location.href='single_test';</script>");
+						+"document.location.href='unsubscribe';</script>");
 				out.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return "/single_test";
+			//return "/single_test";
+			System.out.println("房东没有待受理且未退订的名单测试:"+getRoomMap.get("landlord"));
+			//List<OrderHouse> acceptList=userService.getHouseBysubscribe(getRoomMap);
+			System.out.println("房东没有待受理且未退订的名单测试:"+acceptList);
+			session.setAttribute("land_house", acceptList);
+			//request.setAttribute("land_house", acceptList);
+			return "/unsubscribe";
+			//return "/accept";
 		}else{
 			Map<String,String> landlordMap=new HashMap<String,String>();
-			landlordMap.put("status", "未受理");
+			landlordMap.put("status", "待受理");
 			List<OrderHouse> landList=userService.getHouse_Land(landlordMap);
 			System.out.println("test1:"+landList);
 			session.setAttribute("land_house", landList);
+			//request.setAttribute("land_house", landList);
 			return "/accept";
 		}
 	}
+	
+	/*
+	 *跳转房东处理用户操作订单界面 
+	 */
+	@RequestMapping("/unsubscribe")
+	public String GoSubscribe(HttpServletRequest request,Model model){
+		
+		return "/unsubscribe";
+	}
+	
 	
 	/*
 	 * 管理员主界面跳转其他管理员管理界面
@@ -577,6 +597,8 @@ public class UserController {
 				return "/system_management";
 			}else{
 				System.out.println("在admin_else里"+request.getParameter("name"));
+				List<House> firstThreeHouseList = userService.queryHouseFirstThree();
+				session.setAttribute("firstThreeHouseList", firstThreeHouseList);
 				session.setAttribute("user",userService.login(map));
 				System.out.println("在login_else_session里"+session.getAttribute("user"));
 				return "/index";
@@ -853,10 +875,11 @@ public class UserController {
 			return "/single_test";
 		}else{
 			try {
-				userService.cancel_Single(single);
+				System.out.println("测试用户退房申请"+single);
+				userService.upHouse_OrderSubcribe(single);
 				response.setContentType("text/html;charset=utf-8");
 				PrintWriter out =response.getWriter();
-				out.print("<script type='text/javascript'> alert('系统提示：退订成功!');"
+				out.print("<script type='text/javascript'> alert('系统提示：退订完成，等待房东处理!');"
 						+"document.location.href='single_test';</script>");
 				out.close();
 			} catch (IOException e) {
@@ -865,6 +888,33 @@ public class UserController {
 			}
 			return "/single_test";
 		}
+	}
+	
+	/*
+	 * 房东接到用户协商退房操作
+	 */
+	@RequestMapping("/Contro_Order")
+	public String Subscrebe(HttpServletRequest request,HttpSession session,HttpServletResponse response){
+		Map<String,String> single=new HashMap<String,String>();
+		try {
+			single.put("housename", new String(request.getParameter("roomname").getBytes("iso-8859-1"), "utf-8"));
+			single.put("renter", new String(request.getParameter("renter").getBytes("iso-8859-1"), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			userService.FinishupHouse_OrderSubcribe(single);
+			response.setContentType("text/html;charset=utf-8");
+			PrintWriter out =response.getWriter();
+			out.print("<script type='text/javascript'> alert('系统提示：退房处理成功!');"
+					+"document.location.href='single_test';</script>");
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "/index";
 	}
 	
 	/*

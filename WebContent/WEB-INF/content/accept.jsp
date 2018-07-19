@@ -166,13 +166,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <span class=" col-sm-7 left-side "><a href="#"><img class="img-responsive" src="http://1oz9819419.iask.in:44216/getImage/upload/640_434_picture/${singlelist.room_image1}" alt="" /></a></span> 
         <div class="  col-sm-5 middle-side"> 
          <h4>${singlelist.roomname}</h4> 
-         <p><span class="bath">房屋名称 </span>:<span class="two">${singlelist.roomname}</span></p> 
-         <p><span class="bath">房屋类型 </span>:<span class="two">${singlelist.room_type}</span></p> 
-         <p><span class="bath">房屋价格 </span>:<span class="two">¥${singlelist.price}/月</span></p> 
-         <p><span class="bath">租赁时间 </span>:<span class="two">${singlelist.duration}</span></p> 
-         <p><span class="bath">所在城市 </span>:<span class="two">${singlelist.city}</span></p> 
-         <p><span class="bath">详细地址 </span>:<span class="two">${singlelist.address}</span></p> 
-         <p><span class="bath">租户姓名 </span>:<span class="two">${singlelist.renter}</span></p> 
+         <p><span class="bath">房屋名称: </span>${singlelist.roomname}</p> 
+         <p><span class="bath">房屋类型:</span>${singlelist.room_type}</p> 
+         <p><span class="bath">房屋价格: </span>¥${singlelist.price}/月</p> 
+         <p><span class="bath">租赁时间: </span>${singlelist.duration}</p> 
+         <p><span class="bath">所在城市: </span>${singlelist.city}</p> 
+         <p><span class="bath">详细地址: </span>${singlelist.address}</p> 
+         <p><span class="bath">租户姓名: </span>${singlelist.renter}</p>
+         <p><span class="bath">订单状态: </span>${singlelist.unsubscribe}</p>
          <div class="   right-side">
           <br /> 
           <a href="agreeOrder?roomname=${singlelist.roomname }&renter=${singlelist.renter }" 
